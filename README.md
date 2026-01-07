@@ -1,44 +1,61 @@
-# Multi-Agent RAG Prototype Using LangGraph
+# Mufasser
 
-This repository contains a **prototype Retrieval-Augmented Generation (RAG) system** built to experiment with **LangGraph-based multi-agent workflows** over enterprise documents.
-
-The goal of this project is to validate:
-- Agent orchestration patterns
-- State-driven workflows
-- Retrieval-based answering correctness
-
-FAISS and local embeddings are used **only for prototyping and testing** and are not assumed to be long-term infrastructure choices.
-
----
-
-## Purpose of This Project
-
-This project exists to:
-- Explore LangGraph as an agent workflow orchestrator
-- Test multi-agent separation of responsibilities
-- Validate RAG behavior on structured enterprise-style documents
-- Serve as a foundation for later replacement of retrieval and model components
-
-This is not intended to be a finalized production system.
+Mufasser is an Enterprise Assistant workflow where it supports orchastration processes and automating it easily using AI supported workflows, 
 
 ---
 
 ## Architecture Overview
 
-The system is composed of three explicit agents orchestrated using LangGraph:
+The system is composed of five explicit agents orchestrated using LangGraph:
+1. Input Classifier
+   Tag the input type so it's purpose and route could be detected
 
-1. Query Analyzer  
+2. Query Analyzer  
    Interprets the user question and prepares a retrieval query.
 
-2. Retriever  
-   Retrieves relevant document chunks from a vector index.
+3. Routing
+   custom cases decision routing is used to gurantee consistency and stability
+
+2. Actuation  
+   Each route is responsible for a process, each process has seperated sequential actions to be performed, some using AI if needed.
 
 3. Answer Generator  
-   Produces an answer strictly using retrieved context.
-
-The workflow is linear and deterministic to simplify debugging and evaluation.
+   Produces an answer strictly using actuation state and prompt template.
 
 ---
 
 ## Project Structure
+Folders Structure:
 
+~~~
+Root
+ ├───infrastructure
+ ├───logs
+ ├───models
+ ├───monitoring
+ ├───repo
+ ├───src
+ │   ├───actuation
+ │   ├───perception
+ │   ├───preprocessing
+ │   ├───reasoning
+ │   ├───state_representation
+~~~
+
+ 1. **src** <br>
+which contais execution pipelines
+
+ 2. **models** <br>
+contains used models inference files
+
+ 3. **monitoring**<br>
+  contains the repo(s) that manages the monitoring of pipelines perforemence and efficiency
+
+ 4. **logs**<br>
+contains log records 
+
+ 5. **Repo**<br>
+ Database repo(s) which will support retrieving and authorized writing, updating, or deleting
+
+ 6. **infrastructure** <br>
+ contains configuration for all external dependencies, packages, workflows, and technologies which will be used by other repos or modules of the system
