@@ -1,8 +1,7 @@
 from langchain.tools import tool
-from repo.chroma_repo import ChromaRepo
 
 @tool
-def retrieve_context(query: str, database, collection_name , chroma_repo:ChromaRepo = ChromaRepo()) -> str:
+def retrieve_context(query: str, database, collection_name , repo) -> str:
     """Retrieve data and information from the database, Args:
         query (str): The query string to search for relevant context."""
     
@@ -10,6 +9,6 @@ def retrieve_context(query: str, database, collection_name , chroma_repo:ChromaR
     query_vector = [query]
     
     # Search the collection for relevant context
-    results = chroma_repo.search_collection(collection_name=collection_name, query_vector=query_vector, n_results=5)
+    results = repo.search_collection(collection_name=collection_name, query_vector=query_vector, n_results=5)
     
     return results
